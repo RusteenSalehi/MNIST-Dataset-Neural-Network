@@ -4,26 +4,26 @@ import numpy as np
 class Network:
     def __init__(self):
         #Layer 1: 784 -> 100
-        self.W1 = np.random.randn(100, 784)
-        self.b1 = np.random.randn(100, 1)
+        self.W1 = np.random.randn(50, 64)
+        self.b1 = np.random.randn(50, 1)
 
         #Layer 2: 100 -> 50
-        self.W2 = np.random.randn(50,100)
-        self.b2 = np.random.randn(50, 1)
+        self.W2 = np.random.randn(20,50)
+        self.b2 = np.random.randn(20, 1)
 
         #Layer 3: 50 -> 10
-        self.W3 = np.random.randn(10, 50)
+        self.W3 = np.random.randn(10, 20)
         self.b3 = np.random.randn(10, 1)
 
     #Forward reasoning function based on weights and biases
     def forward(self, x):
-        Z1 = np.matmul(self.W1, x) + self.b1
-        A1 = self.ReLU(Z1)
-        Z2 = np.matmul(self.W2, A1) + self.b2
-        A2 = self.ReLU(Z2)
-        Z3 = np.matmul(self.W3, A2) + self.b3
-        A3 = self.ReLU(Z3)
-        return A3
+        self.Z1 = np.matmul(self.W1, x) + self.b1
+        self.A1 = self.ReLU(self.Z1)
+        self.Z2 = np.matmul(self.W2, self.A1) + self.b2
+        self.A2 = self.ReLU(self.Z2)
+        self.Z3 = np.matmul(self.W3, self.A2) + self.b3
+        self.A3 = self.ReLU(self.Z3)
+        return self.A3
 
     #Basic ReLU function to keep all values positive
     def ReLU(self, Z):
@@ -50,7 +50,7 @@ class Network:
         dZ2 = dA2 * self.derivativeReLU(self.Z2)
         dW2 = np.matmul(dZ2, self.A1.T)
         dB2 = dZ2
-        dA1 = np.matmul(dZ2, self.A1.T)
+        dA1 = np.matmul(self.W2.T, dZ2)
         dZ1 = dA1 * self.derivativeReLU(self.Z1)
         dW1 = np.matmul(dZ1, x.T)
         dB1 = dZ1

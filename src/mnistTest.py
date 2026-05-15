@@ -1,28 +1,39 @@
 from sklearn.datasets import load_digits
-import matplotlib.pyplot as plt
 import numpy as np
+from network import Network
 
 digits = load_digits()
-print("Images shape:", digits.iamges.shape)
-print("Labels shape:", digits.target.shape)
+net = Network()
+lr = 0.00001
+epochs = 10
 
-image = digits.images[0]
-label = digits.target[0]
+for epoch in range(epochs):
+    totalLoss = 0
+    for i in range(len(digits.images)):
+        image = digits.images[i]
+        label = digits.target[i]
 
-print("Label:", label)
+        x = image.reshape(64,1)
 
-print("Original image matrix")
-print(image)
+        target = np.zeros((10,1))
+        target[label][0] = 1
 
-print("Original shape", image.shape)
+        prediction = net.forward(x)
 
-flattened = image.reshape(64,1)
+        loss = net.mseLossFunction(prediction, target)
+        totalLoss += loss
 
-print("Flattened vector:")
-print(flattened)
+        net.backward(x, target, lr)
 
-print("Flattened shape:", flattened.shape)
+    averageLoss = totalLoss / len(digits.images)
 
-plt.imshow(image, cmap="gray")
-plt.title(f"label: {label}")
-plt.show()
+    print(f"Epoch {epoch + 1}")
+    print("Average Loss:", averageLoss)
+
+    testImage = digits.images[0].reshape(64,1)
+
+    testPrediction = net.forward(testImage)
+    predictedDigit = np.argmax(testPrediction)
+    print("Predicted Digits:", predictedDigit)
+    print("Actual Digit:", digits.target[0])
+    print("--------------------------")
