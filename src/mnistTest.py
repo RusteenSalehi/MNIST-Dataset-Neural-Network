@@ -37,3 +37,13 @@ for epoch in range(epochs):
     print("Predicted Digits:", predictedDigit)
     print("Actual Digit:", digits.target[0])
     print("--------------------------")
+print("\nTesting Network\n")
+for i in range(10):
+    image = digits.images[i]
+    x = image.reshape(64,1)
+    prediction = net.forward(x)
+    predictedDigit = np.argmax(prediction)
+    actualDigit = digits.target[i]
+    print("Predicted:", predictedDigit)
+    print("Actual:", actualDigit)
+    print("--------------------------")
