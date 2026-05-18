@@ -22,7 +22,7 @@ class Network:
         self.Z2 = np.matmul(self.W2, self.A1) + self.b2
         self.A2 = self.ReLU(self.Z2)
         self.Z3 = np.matmul(self.W3, self.A2) + self.b3
-        self.A3 = self.ReLU(self.Z3)
+        self.A3 = self.Z3
         return self.A3
 
     #Basic ReLU function to keep all values positive
@@ -42,8 +42,7 @@ class Network:
     #Back propagation function
     def backward(self, x, y, lr):
         #Taking partial derivatives for each parameter
-        dA3 = 2 * (self.A3 - y)
-        dZ3 = dA3 * self.derivativeReLU(self.Z3)
+        dZ3 = 2 * (self.A3 - y)
         dW3 = np.matmul(dZ3, self.A2.T)
         dB3 = dZ3
         dA2 = np.matmul(self.W3.T, dZ3)
