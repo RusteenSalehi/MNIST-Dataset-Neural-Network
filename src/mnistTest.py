@@ -13,7 +13,7 @@ for epoch in range(epochs):
         image = digits.images[i]
         label = digits.target[i]
 
-        x = image.reshape(64,1)
+        x = image.reshape(64,1) / 16
 
         target = np.zeros((10,1))
         target[label][0] = 1

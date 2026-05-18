@@ -4,15 +4,15 @@ import numpy as np
 class Network:
     def __init__(self):
         #Layer 1: 784 -> 100
-        self.W1 = np.random.randn(50, 64)
+        self.W1 = np.random.randn(50, 64) * np.sqrt(2/64)
         self.b1 = np.random.randn(50, 1)
 
         #Layer 2: 100 -> 50
-        self.W2 = np.random.randn(20,50)
+        self.W2 = np.random.randn(20,50) * np.sqrt(2/50)
         self.b2 = np.random.randn(20, 1)
 
         #Layer 3: 50 -> 10
-        self.W3 = np.random.randn(10, 20)
+        self.W3 = np.random.randn(10, 20) * np.sqrt(2/20)
         self.b3 = np.random.randn(10, 1)
 
     #Forward reasoning function based on weights and biases
@@ -27,9 +27,7 @@ class Network:
 
     #Basic ReLU function to keep all values positive
     def ReLU(self, Z):
-        for i in range(len(Z)):
-            Z[i] = max(Z[i], 0)
-        return Z
+        return np.maximum(Z, 0)
 
     #Derivative ReLU for gradient descent (0 for negative numbers, 1 for positive numbers)
     def derivativeReLU(self, Z):
