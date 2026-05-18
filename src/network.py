@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.distutils.fcompiler import none
+#from numpy.distutils.fcompiler import none
 
 
 #Neural Network Class
@@ -43,7 +43,8 @@ class Network:
         return (Z > 0).astype(float)
 
     #Mean Squared Error loss function
-    def mse_loss_function(self, prediction, target):
+    @staticmethod
+    def mse_loss_function(prediction, target):
         return np.mean((prediction - target) ** 2)
 
     #Back propagation function
