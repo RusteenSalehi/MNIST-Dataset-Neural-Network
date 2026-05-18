@@ -1,4 +1,6 @@
 import numpy as np
+from numpy.distutils.fcompiler import none
+
 
 #Neural Network Class
 class Network:
@@ -15,6 +17,13 @@ class Network:
         self.W3 = np.random.randn(10, 20) * np.sqrt(2/20)
         self.b3 = np.random.randn(10, 1)
 
+        #Initialize all values to none
+        self.Z1 = None
+        self.A1 = None
+        self.Z2 = None
+        self.A2 = None
+        self.Z3 = None
+        self.A3 = None
     #Forward reasoning function based on weights and biases
     def forward(self, x):
         self.Z1 = np.matmul(self.W1, x) + self.b1
@@ -30,37 +39,37 @@ class Network:
         return np.maximum(Z, 0)
 
     #Derivative ReLU for gradient descent (0 for negative numbers, 1 for positive numbers)
-    def derivativeReLU(self, Z):
+    def derivative_Relu(self, Z):
         return (Z > 0).astype(float)
 
     #Mean Squared Error loss function
-    def mseLossFunction(self, prediction, target):
+    def mse_loss_function(self, prediction, target):
         return np.mean((prediction - target) ** 2)
 
     #Back propagation function
     def backward(self, x, y, lr):
         #Taking partial derivatives for each parameter
-        dZ3 = 2 * (self.A3 - y)
-        dW3 = np.matmul(dZ3, self.A2.T)
-        dB3 = dZ3
-        dA2 = np.matmul(self.W3.T, dZ3)
-        dZ2 = dA2 * self.derivativeReLU(self.Z2)
-        dW2 = np.matmul(dZ2, self.A1.T)
-        dB2 = dZ2
-        dA1 = np.matmul(self.W2.T, dZ2)
-        dZ1 = dA1 * self.derivativeReLU(self.Z1)
-        dW1 = np.matmul(dZ1, x.T)
-        dB1 = dZ1
+        d_z3 = 2 * (self.A3 - y)
+        d_w3 = np.matmul(d_z3, self.A2.T)
+        d_b3 = d_z3
+        d_a2 = np.matmul(self.W3.T, d_z3)
+        d_z2 = d_a2 * self.derivative_Relu(self.Z2)
+        d_w2 = np.matmul(d_z2, self.A1.T)
+        d_b2 = d_z2
+        d_a1 = np.matmul(self.W2.T, d_z2)
+        d_z1 = d_a1 * self.derivative_Relu(self.Z1)
+        d_w1 = np.matmul(d_z1, x.T)
+        d_b1 = d_z1
         #Updating parameters after gradient descent
-        self.W1 = self.W1 - lr * dW1
-        self.b1 = self.b1 - lr * dB1
-        self.W2 = self.W2 - lr * dW2
-        self.b2 = self.b2 - lr * dB2
-        self.W3 = self.W3 - lr * dW3
-        self.b3 = self.b3 - lr * dB3
+        self.W1 = self.W1 - lr * d_w1
+        self.b1 = self.b1 - lr * d_b1
+        self.W2 = self.W2 - lr * d_w2
+        self.b2 = self.b2 - lr * d_b2
+        self.W3 = self.W3 - lr * d_w3
+        self.b3 = self.b3 - lr * d_b3
 
     #Soft-max function to turn output layers to probability
-    def softmax(self, Z):
-        Z = Z - np.max(Z)
-        expZ = np.exp(Z)
-        return expZ / np.sum(expZ)
+    def softmax(self, z):
+        z = z - np.max(z)
+        exp_z = np.exp(z)
+        return exp_z / np.sum(exp_z)
