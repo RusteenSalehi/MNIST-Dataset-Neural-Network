@@ -27,20 +27,20 @@ class Network:
     #Forward reasoning function based on weights and biases
     def forward(self, x):
         self.Z1 = np.matmul(self.W1, x) + self.b1
-        self.A1 = self.ReLU(self.Z1)
+        self.A1 = self.relu(self.Z1)
         self.Z2 = np.matmul(self.W2, self.A1) + self.b2
-        self.A2 = self.ReLU(self.Z2)
+        self.A2 = self.relu(self.Z2)
         self.Z3 = np.matmul(self.W3, self.A2) + self.b3
         self.A3 = self.softmax(self.Z3) #Use softmax to turn output to probabilities
         return self.A3
 
     #Basic ReLU function to keep all values positive
-    def ReLU(self, Z):
-        return np.maximum(Z, 0)
+    def relu(self, z):
+        return np.maximum(z, 0)
 
     #Derivative ReLU for gradient descent (0 for negative numbers, 1 for positive numbers)
-    def derivative_Relu(self, Z):
-        return (Z > 0).astype(float)
+    def derivative_relu(self, z):
+        return (z > 0).astype(float)
 
     #Mean Squared Error loss function
     @staticmethod
@@ -54,11 +54,11 @@ class Network:
         d_w3 = np.matmul(d_z3, self.A2.T)
         d_b3 = d_z3
         d_a2 = np.matmul(self.W3.T, d_z3)
-        d_z2 = d_a2 * self.derivative_Relu(self.Z2)
+        d_z2 = d_a2 * self.derivative_relu(self.Z2)
         d_w2 = np.matmul(d_z2, self.A1.T)
         d_b2 = d_z2
         d_a1 = np.matmul(self.W2.T, d_z2)
-        d_z1 = d_a1 * self.derivative_Relu(self.Z1)
+        d_z1 = d_a1 * self.derivative_relu(self.Z1)
         d_w1 = np.matmul(d_z1, x.T)
         d_b1 = d_z1
         #Updating parameters after gradient descent
