@@ -22,7 +22,7 @@ class Network:
         self.Z2 = np.matmul(self.W2, self.A1) + self.b2
         self.A2 = self.ReLU(self.Z2)
         self.Z3 = np.matmul(self.W3, self.A2) + self.b3
-        self.A3 = self.Z3
+        self.A3 = self.softmax(self.Z3) #Use softmax to turn output to probabilities
         return self.A3
 
     #Basic ReLU function to keep all values positive
@@ -58,3 +58,9 @@ class Network:
         self.b2 = self.b2 - lr * dB2
         self.W3 = self.W3 - lr * dW3
         self.b3 = self.b3 - lr * dB3
+
+    #Soft-max function to turn output layers to probability
+    def softmax(self, Z):
+        Z = Z - np.max(Z)
+        expZ = np.exp(Z)
+        return expZ / np.sum(expZ)
