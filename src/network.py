@@ -31,7 +31,7 @@ class Network:
             Z[i] = max(Z[i], 0)
         return Z
 
-    #Derivative ReLU for gradient descent
+    #Derivative ReLU for gradient descent (0 for negative numbers, 1 for positive numbers)
     def derivativeReLU(self, Z):
         return (Z > 0).astype(float)
 
