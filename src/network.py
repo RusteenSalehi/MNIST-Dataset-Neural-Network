@@ -44,13 +44,14 @@ class Network:
 
     #Mean Squared Error loss function
     @staticmethod
-    def mse_loss_function(prediction, target):
-        return np.mean((prediction - target) ** 2)
+    def cross_entropy_loss(prediction, target):
+        epsilon = 1e-10
+        return -np.sum(target * np.log(prediction + epsilon))
 
     #Back propagation function
     def backward(self, x, y, lr):
         #Taking partial derivatives for each parameter
-        d_z3 = 2 * (self.A3 - y)
+        d_z3 = self.A3 - y
         d_w3 = np.matmul(d_z3, self.A2.T)
         d_b3 = d_z3
         d_a2 = np.matmul(self.W3.T, d_z3)

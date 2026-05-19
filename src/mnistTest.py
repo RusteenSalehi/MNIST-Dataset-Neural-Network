@@ -20,7 +20,7 @@ for epoch in range(epochs):
 
         prediction = net.forward(x)
 
-        loss = net.mse_loss_function(prediction, target)
+        loss = net.cross_entropy_loss(prediction, target)
         total_loss += loss
 
         net.backward(x, target, lr)
