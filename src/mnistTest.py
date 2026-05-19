@@ -5,11 +5,12 @@ from network import Network
 digits = load_digits()
 net = Network()
 lr = 0.00001
-epochs = 10
+epochs = 100
 
 for epoch in range(epochs):
+    indices = np.random.permutation(len(digits.images))
     total_loss = 0
-    for i in range(len(digits.images)):
+    for i in indices:
         image = digits.images[i]
         label = digits.target[i]
 
@@ -27,23 +28,22 @@ for epoch in range(epochs):
 
     average_loss = total_loss / len(digits.images)
 
-    print(f"Epoch {epoch + 1}")
-    print("Average Loss:", average_loss)
+    if epoch % 10 == 0:
+        print(f"Epoch {epoch + 1}")
+        print("Average Loss:", average_loss)
 
-    test_image = digits.images[0].reshape(64, 1)
-
-    test_prediction = net.forward(test_image)
-    predicted_digit = np.argmax(test_prediction)
-    print("Predicted Digits:", predicted_digit)
-    print("Actual Digit:", digits.target[0])
-    print("--------------------------")
 print("\nTesting Network\n")
+correct = 0
 for i in range(10):
     image = digits.images[i]
-    x = image.reshape(64,1)
+    x = image.reshape(64,1) / 16
     prediction = net.forward(x)
     predicted_digit = np.argmax(prediction)
     actual_digit = digits.target[i]
     print("Predicted:", predicted_digit)
     print("Actual:", actual_digit)
     print("--------------------------")
+    if actual_digit == predicted_digit:
+        correct += 1
+accuracy = (correct / 10) * 100
+print("This model ran with ", accuracy, "% accuracy")
