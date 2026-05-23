@@ -50,10 +50,12 @@ class Network:
 
     #Back propagation function
     def backward(self, x, y, lr):
+        #Taking the batch size to ensure matrix multiplication is still valid
+        batch_size = x.shape[1]
         #Taking partial derivatives for each parameter
         d_z3 = self.A3 - y
-        d_w3 = np.matmul(d_z3, self.A2.T)
-        d_b3 = d_z3
+        d_w3 = np.matmul(d_z3, self.A2.T) / batch_size
+        d_b3 = np.sum(d_z3, axis = 1, keepdims = True) / batch_size
         d_a2 = np.matmul(self.W3.T, d_z3)
         d_z2 = d_a2 * self.derivative_relu(self.Z2)
         d_w2 = np.matmul(d_z2, self.A1.T)
