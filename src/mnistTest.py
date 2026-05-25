@@ -5,7 +5,7 @@ from network import Network
 digits = load_digits()
 net = Network()
 
-learning_rate = 0.00001
+learning_rate = 0.001
 epochs = 100
 batch_size = 32
 
@@ -42,32 +42,32 @@ for epoch in range(epochs):
 
     average_loss = total_loss / len(digits.images)
 
-    # if epoch % 10 == 0:
-    #     print(f"Epoch {epoch + 1}")
-    #     print(f"Average Loss: {average_loss}")
-    #
-    # correct = 0
-    # total = 10
-    #
-    # print("\nTesting Sample Predictions\n")
-    #
-    # for i in range(10):
-    #     image = digits.images[i]
-    #
-    #     x = image.reshape(64, 1) / 16
-    #
-    #     prediction = net.forward(x)
-    #     predicted_digit = np.argmax(prediction)
-    #     actual_digit = digits.target[i]
-    #
-    #     if predicted_digit == actual_digit:
-    #         correct += 1
-    #
-    #     print(f"Predicted: {predicted_digit}")
-    #     print(f"Actual: {actual_digit}")
-    #     print("-----------------------")
-    #
-    # accuracy = (correct / total) * 100
-    #
-    # print(f"Accuracy: {accuracy:.2f}%")
-    # print("=================================")
+    if epoch % 10 == 0:
+        print(f"Epoch {epoch + 1}")
+        print(f"Average Loss: {average_loss}")
+
+    correct = 0
+    total = 10
+
+    print("\nTesting Sample Predictions\n")
+
+    for i in range(10):
+        image = digits.images[i]
+
+        x = image.reshape(64, 1) / 16
+
+        prediction = net.forward(x)
+        predicted_digit = np.argmax(prediction)
+        actual_digit = digits.target[i]
+
+        if predicted_digit == actual_digit:
+            correct += 1
+
+        print(f"Predicted: {predicted_digit}")
+        print(f"Actual: {actual_digit}")
+        print("-----------------------")
+
+    accuracy = (correct / total) * 100
+
+    print(f"Accuracy: {accuracy:.2f}%")
+    print("=================================")

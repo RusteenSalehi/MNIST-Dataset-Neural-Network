@@ -58,12 +58,12 @@ class Network:
         d_b3 = np.sum(d_z3, axis = 1, keepdims = True) / batch_size
         d_a2 = np.matmul(self.W3.T, d_z3)
         d_z2 = d_a2 * self.derivative_relu(self.Z2)
-        d_w2 = np.matmul(d_z2, self.A1.T)
-        d_b2 = d_z2
+        d_w2 = np.matmul(d_z2, self.A1.T) / batch_size
+        d_b2 = np.sum(d_z2, axis = 1, keepdims = True) / batch_size
         d_a1 = np.matmul(self.W2.T, d_z2)
         d_z1 = d_a1 * self.derivative_relu(self.Z1)
-        d_w1 = np.matmul(d_z1, x.T)
-        d_b1 = d_z1
+        d_w1 = np.matmul(d_z1, x.T) / batch_size
+        d_b1 = np.sum(d_z1, axis = 1, keepdims = True) / batch_size
         #Updating parameters after gradient descent
         self.W1 = self.W1 - lr * d_w1
         self.b1 = self.b1 - lr * d_b1
@@ -74,6 +74,6 @@ class Network:
 
     #Soft-max function to turn output layers to probability
     def softmax(self, z):
-        z = z - np.max(z)
+        z = z - np.max(z, axis = 0, keepdims = True)
         exp_z = np.exp(z)
-        return exp_z / np.sum(exp_z)
+        return exp_z / np.sum(exp_z, axis = 0, keepdims = True)
