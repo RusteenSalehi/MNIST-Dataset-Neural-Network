@@ -5,16 +5,16 @@ import numpy as np
 #Neural Network Class
 class Network:
     def __init__(self):
-        #Layer 1: 784 -> 100
-        self.W1 = np.random.randn(50, 64) * np.sqrt(2/64)
-        self.b1 = np.random.randn(50, 1)
+        #Layer 1: 784 -> 128
+        self.W1 = np.random.randn(128, 784) * np.sqrt(2/784)
+        self.b1 = np.random.randn(128, 1)
 
-        #Layer 2: 100 -> 50
-        self.W2 = np.random.randn(20,50) * np.sqrt(2/50)
-        self.b2 = np.random.randn(20, 1)
+        #Layer 2: 128 -> 60
+        self.W2 = np.random.randn(60,128) * np.sqrt(2/128)
+        self.b2 = np.random.randn(60, 1)
 
-        #Layer 3: 50 -> 10
-        self.W3 = np.random.randn(10, 20) * np.sqrt(2/20)
+        #Layer 3: 60 -> 10
+        self.W3 = np.random.randn(10, 60) * np.sqrt(2/60)
         self.b3 = np.random.randn(10, 1)
 
         #Initialize all values to none
