@@ -5,8 +5,8 @@ from network import Network
 digits = load_digits()
 net = Network()
 
-learning_rate = 0.001
-epochs = 100
+learning_rate = 0.0005
+epochs = 500
 batch_size = 32
 
 for epoch in range(epochs):
