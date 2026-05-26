@@ -8,7 +8,7 @@ from mlp_network import Network
 net = Network()
 
 learning_rate = 0.0001
-epochs = 500
+epochs = 10000
 batch_size = 32
 
 for epoch in range(epochs):
@@ -44,7 +44,7 @@ for epoch in range(epochs):
 
     average_loss = total_loss / len(x_train)
 
-    if epoch % 1 == 0:
+    if epoch % 10 == 0:
         print(f"Epoch {epoch + 1}")
         print(f"Average Loss: {average_loss}")
 
