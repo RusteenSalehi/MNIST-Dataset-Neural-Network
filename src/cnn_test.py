@@ -6,11 +6,11 @@ from cnn_network import Network
 from data_loader import load_mnist
 
 # Set True to train on a small subset for fast iteration; False for a full run.
-USE_SUBSET = True
+USE_SUBSET = False
 SUBSET_SIZE = 5000
 
 learning_rate = 0.05
-epochs = 5
+epochs = 3
 batch_size = 32
 
 x_train, y_train, x_test, y_test = load_mnist()
