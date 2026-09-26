@@ -271,6 +271,63 @@ class SoftmaxCrossEntropy:
         return self.probs - y  # (num_classes, batch), undivided by batch size
 
 
+class Network:
+    """Conv2D(1->8) -> ReLU -> Pool -> Conv2D(8->16) -> ReLU -> Pool
+    -> Flatten -> Dense(->64) -> ReLU -> Dense(->10) -> Softmax."""
+
+    def __init__(self):
+        self.conv1 = Conv2D(1, 8, 3)
+        self.relu1 = ReLU()
+        self.pool1 = MaxPool2D(2, 2)
+
+        self.conv2 = Conv2D(8, 16, 3)
+        self.relu2 = ReLU()
+        self.pool2 = MaxPool2D(2, 2)
+
+        self.flatten = Flatten()
+        self.dense1 = Dense(16 * 5 * 5, 64)
+        self.relu3 = ReLU()
+        self.dense2 = Dense(64, 10)
+        self.softmax = SoftmaxCrossEntropy()
+
+    def forward(self, x):
+        # x: (batch, 1, 28, 28)
+        out = self.conv1.forward(x)      # (batch, 8, 26, 26)
+        out = self.relu1.forward(out)
+        out = self.pool1.forward(out)    # (batch, 8, 13, 13)
+
+        out = self.conv2.forward(out)    # (batch, 16, 11, 11)
+        out = self.relu2.forward(out)
+        out = self.pool2.forward(out)    # (batch, 16, 5, 5)
+
+        out = self.flatten.forward(out)  # (400, batch)
+        out = self.dense1.forward(out)   # (64, batch)
+        out = self.relu3.forward(out)
+        out = self.dense2.forward(out)   # (10, batch)
+
+        return self.softmax.forward(out)  # (10, batch)
+
+    def loss(self, probs, y):
+        return self.softmax.loss(probs, y)
+
+    def backward(self, y, lr):
+        d = self.softmax.backward(y)
+        d = self.dense2.backward(d)
+        d = self.relu3.backward(d)
+        d = self.dense1.backward(d)
+        d = self.flatten.backward(d)
+        d = self.pool2.backward(d)
+        d = self.relu2.backward(d)
+        d = self.conv2.backward(d)
+        d = self.pool1.backward(d)
+        d = self.relu1.backward(d)
+        self.conv1.backward(d)
+
+        for layer in (self.conv1, self.conv2, self.dense1, self.dense2):
+            layer.W -= lr * layer.d_W
+            layer.b -= lr * layer.d_b
+
+
 if __name__ == "__main__":
     from data_loader import load_mnist
 
